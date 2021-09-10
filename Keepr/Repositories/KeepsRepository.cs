@@ -58,5 +58,11 @@ namespace Keepr.Repositories
       newKeep.Id = _db.ExecuteScalar<int>(sql, newKeep);
       return newKeep;
     }
+
+    public void Delete(int id)
+    {
+      string sql = "DELETE FROM keeps WHERE id = @id LIMIT 1";
+      _db.Execute(sql, new { id });
+    }
   }
 }

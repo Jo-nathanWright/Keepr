@@ -32,5 +32,15 @@ namespace Keepr.Services
     {
       return _repo.Create(newKeep);
     }
+
+    internal void Delete(int keepId, string accountId)
+    {
+      Keep delete = Get(keepId);
+      if(delete.CreatorId != accountId)
+      {
+        throw new Exception("Access Denied");
+      }
+      _repo.Delete(keepId);
+    }
   }
 }
