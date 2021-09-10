@@ -13,9 +13,14 @@ namespace Keepr.Services
       _repo = repo;
     }
 
-    public List<Keep> Get()
+    internal List<Keep> Get()
     {
       return _repo.GetAll();
+    }
+
+    internal Keep Create(Keep newKeep)
+    {
+      return _repo.Create(newKeep);
     }
   }
 }
