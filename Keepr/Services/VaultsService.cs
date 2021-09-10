@@ -22,5 +22,10 @@ namespace Keepr.Services
       }
       return found;
     }
+
+    internal Vault Create(Vault newVault)
+    {
+      return _repo.Create(newVault);
+    }
   }
 }

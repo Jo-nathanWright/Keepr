@@ -14,7 +14,7 @@ namespace Keepr.Repositories
       _db = db;
     }
 
-    internal Vault GetbyId(int id)
+    public Vault GetbyId(int id)
     {
       string sql = @"
       SELECT
@@ -29,6 +29,19 @@ namespace Keepr.Repositories
         v.Creator = p;
         return v;
       }, new{id}, splitOn: "id").FirstOrDefault();
+    }
+
+    public Vault Create(Vault newVault)
+    {
+      string sql = @"
+      INSERT INTO vaults
+      (name, description, isPrivate, creatorId)
+      VALUES
+      (@Name, @Description, @IsPrivate, @CreatorId);
+      SELECT LAST_INSERT_ID();
+      ";
+      newVault.Id = _db.ExecuteScalar<int>(sql, newVault);
+      return newVault;
     }
   }
 }

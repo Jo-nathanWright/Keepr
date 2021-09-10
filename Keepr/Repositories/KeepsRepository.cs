@@ -59,7 +59,7 @@ namespace Keepr.Repositories
       return GetbyId(newKeep.Id);
     }
 
-    internal Keep Update(Keep editedKeep)
+    public Keep Update(Keep editedKeep)
     {
       string sql = @"
       UPDATE keeps
