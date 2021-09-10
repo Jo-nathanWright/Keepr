@@ -74,6 +74,7 @@ namespace Keepr.Controllers
         editedKeep.CreatorId = userInfo.Id;
         editedKeep.Id = id;
         Keep keep = _ks.Update(editedKeep);
+        editedKeep.Creator = userInfo;
         return Ok(editedKeep);
       }
         catch (Exception err)

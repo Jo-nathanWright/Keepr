@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Keepr.Controllers
 {
-    [ApiController]
-    [Route("/api/[controller]")]
-    public class VaultsController : ControllerBase
-    {
+  [ApiController]
+  [Route("/api/[controller]")]
+  public class VaultsController : ControllerBase
+  {
     private readonly VaultsService _rs;
 
     public VaultsController(VaultsService rs)
@@ -22,13 +22,14 @@ namespace Keepr.Controllers
     [HttpGet("{id}")]
     public ActionResult<Vault> Get(int id)
     {
-        try
-        {
+      try
+      {
+        //Get account and see if null, if null yell at person, if not let checkPrivate = false
         Vault vault = _rs.Get(id);
         return Ok(vault);
       }
-        catch (Exception err)
-        {
+      catch (Exception err)
+      {
         return BadRequest(err.Message);
       }
     }
@@ -37,16 +38,51 @@ namespace Keepr.Controllers
     [Authorize]
     public async Task<ActionResult<Vault>> Create([FromBody] Vault newVault)
     {
-        try
-        {
+      try
+      {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
         newVault.CreatorId = userInfo.Id;
         Vault vault = _rs.Create(newVault);
         newVault.Creator = userInfo; //Better way to Append Creator Onto Vault. Justin guided me!
         return Ok(newVault);
       }
-        catch (Exception err)
-        {
+      catch (Exception err)
+      {
+        return BadRequest(err.Message);
+      }
+    }
+
+    [HttpPut("{id}")]
+    [Authorize]
+    public async Task<ActionResult<Vault>> Update(int id, [FromBody] Vault updateVault)
+    {
+      try
+      {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        updateVault.CreatorId = userInfo.Id;
+        updateVault.Id = id;
+        Vault vault = _rs.Update(updateVault);
+        updateVault.Creator = userInfo;
+        return Ok(updateVault);
+      }
+      catch (Exception err)
+      {
+        return BadRequest(err.Message);
+      }
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<ActionResult<String>> Delete(int id)
+    {
+      try
+      {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        _rs.Delete(id, userInfo.Id);
+        return Ok("Vault Deleted");
+      }
+      catch (Exception err)
+      {
         return BadRequest(err.Message);
       }
     }
