@@ -18,3 +18,12 @@ CREATE TABLE IF NOT EXISTS keeps(
   keeps int,
   FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
 )default charset utf8 comment '';
+
+CREATE TABLE IF NOT EXISTS vaults(
+  id int NOT NULL primary key AUTO_INCREMENT,
+  creatorId VARCHAR(255) NOT NULL comment 'Creator Id References Account',
+  name VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
+  isPrivate TINYINT COMMENT 'Bool value for Private',
+  FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
+)default charset utf8 comment '';
