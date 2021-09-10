@@ -1,3 +1,5 @@
+using System;
+using Keepr.Models;
 using Keepr.Repositories;
 
 namespace Keepr.Services
@@ -9,6 +11,16 @@ namespace Keepr.Services
     public VaultsService(VaultsRepository repo)
     {
       _repo = repo;
+    }
+
+    internal Vault Get(int id)
+    {
+      Vault found = _repo.GetbyId(id);
+      if(found == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return found;
     }
   }
 }
