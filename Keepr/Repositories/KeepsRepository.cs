@@ -31,6 +31,23 @@ namespace Keepr.Repositories
       }, splitOn: "id").ToList();
     }
 
+    public Keep GetbyId(int id)
+    {
+      string sql = @"
+      SELECT
+        k.*,
+        a.*
+      FROM keeps k
+      JOIN accounts a ON k.creatorId = a.id
+      WHERE k.id = @id;
+      ";
+      return _db.Query<Keep, Profile, Keep>(sql, (k, p) =>
+      {
+        k.Creator = p;
+        return k;
+      }, new{id}, splitOn: "id").FirstOrDefault();
+    }
+
     public Keep Create(Keep newKeep)
     {
       string sql = @"

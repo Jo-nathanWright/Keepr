@@ -21,10 +21,25 @@ namespace Keepr.Controllers
     }
 
     [HttpGet]
-    public ActionResult<List<Keep>> Get(){
+    public ActionResult<List<Keep>> Get()
+    {
         try
         {
         List<Keep> keep = _ks.Get();
+        return Ok(keep);
+      }
+        catch (Exception err)
+        {
+        return BadRequest(err.Message);
+      }
+    }
+
+    [HttpGet("{id}")]
+    public ActionResult<Keep> Get(int id)
+    {
+        try
+        {
+        Keep keep = _ks.Get(id);
         return Ok(keep);
       }
         catch (Exception err)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Keepr.Models;
 using Keepr.Repositories;
@@ -18,6 +19,15 @@ namespace Keepr.Services
       return _repo.GetAll();
     }
 
+    internal Keep Get(int id)
+    {
+      Keep keep = _repo.GetbyId(id);
+      if(keep == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return keep;
+    }
     internal Keep Create(Keep newKeep)
     {
       return _repo.Create(newKeep);
