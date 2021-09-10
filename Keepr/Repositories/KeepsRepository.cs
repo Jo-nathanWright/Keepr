@@ -56,7 +56,7 @@ namespace Keepr.Repositories
       SELECT LAST_INSERT_ID();
       ";
       newKeep.Id = _db.ExecuteScalar<int>(sql, newKeep);
-      return newKeep;
+      return GetbyId(newKeep.Id);
     }
 
     internal Keep Update(Keep editedKeep)
