@@ -33,6 +33,20 @@ namespace Keepr.Services
       return _repo.Create(newKeep);
     }
 
+    internal Keep Update(Keep editedKeep)
+    {
+      Keep original = Get(editedKeep.Id);
+      if(original.CreatorId != editedKeep.CreatorId)
+      {
+        throw new Exception("Access Denied");
+      }
+      original.Name = editedKeep.Name ?? original.Name;
+      original.Description = editedKeep.Description ?? original.Description;
+      original.Img = editedKeep.Img ?? original.Img;
+      _repo.Update(original);
+      return original;
+    }
+
     internal void Delete(int keepId, string accountId)
     {
       Keep delete = Get(keepId);

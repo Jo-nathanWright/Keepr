@@ -59,6 +59,20 @@ namespace Keepr.Repositories
       return newKeep;
     }
 
+    internal Keep Update(Keep editedKeep)
+    {
+      string sql = @"
+      UPDATE keeps
+      SET
+        name = @Name,
+        description = @Description,
+        img = @Img
+      WHERE id = @Id
+      ";
+      _db.Execute(sql, editedKeep);
+      return editedKeep;
+    }
+
     public void Delete(int id)
     {
       string sql = "DELETE FROM keeps WHERE id = @id LIMIT 1";
