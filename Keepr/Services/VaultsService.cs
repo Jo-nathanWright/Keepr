@@ -13,10 +13,10 @@ namespace Keepr.Services
       _repo = repo;
     }
 
-    internal Vault Get(int id, bool checkPrivate = false)
+    internal Vault Get(int id, string accountId, bool checkPrivate = false)
     {
       Vault found = _repo.GetbyId(id);
-      if(found == null || (checkPrivate == true && found.IsPrivate == true) )
+      if(found == null || (checkPrivate == true && found.IsPrivate == true) || (found.CreatorId != accountId && found.CreatorId != null) )
       {
         throw new Exception("Access Denied");
       }
@@ -30,7 +30,7 @@ namespace Keepr.Services
 
     internal Vault Update(Vault updateVault)
     {
-      Vault original = Get(updateVault.Id, true);
+      Vault original = Get(updateVault.Id, updateVault.CreatorId, true);
       if(original.CreatorId != updateVault.CreatorId)
       {
         throw new Exception("Access Denied");
@@ -44,7 +44,7 @@ namespace Keepr.Services
 
     internal void Delete(int vaultId, string accountId)
     {
-      Vault deleted = Get(vaultId, false);
+      Vault deleted = Get(vaultId, accountId,  false);
       if(deleted.CreatorId != accountId)
       {
         throw new Exception("Access Denied");

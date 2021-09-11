@@ -26,10 +26,10 @@ namespace Keepr.Controllers
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
         if(userInfo == null){
-          Vault unAuth = _rs.Get(id, true);
+          Vault unAuth = _rs.Get(id, userInfo.Id,  true);
           return Ok(unAuth);
         }
-        Vault vault = _rs.Get(id, false);
+        Vault vault = _rs.Get(id, userInfo.Id, false);
         //Get account and see if null, if null yell at person, if not let checkPrivate = false
         return Ok(vault);
       }
