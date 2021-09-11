@@ -20,12 +20,17 @@ namespace Keepr.Controllers
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Vault> Get(int id)
+    public async Task<ActionResult<Vault>> Get(int id)
     {
       try
       {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        if(userInfo == null){
+          Vault unAuth = _rs.Get(id, true);
+          return Ok(unAuth);
+        }
+        Vault vault = _rs.Get(id, false);
         //Get account and see if null, if null yell at person, if not let checkPrivate = false
-        Vault vault = _rs.Get(id);
         return Ok(vault);
       }
       catch (Exception err)
