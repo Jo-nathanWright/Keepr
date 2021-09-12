@@ -1,3 +1,4 @@
+using System;
 using Keepr.Models;
 using Keepr.Repositories;
 
@@ -19,6 +20,26 @@ namespace Keepr.Services
     internal VaultKeep Create(VaultKeep newVK)
     {
       return _vkr.Create(newVK);
+    }
+
+    private VaultKeep GetById(int id)
+    {
+      VaultKeep found = _vkr.GetById(id);
+      if(found == null)
+        {
+        throw new Exception("Invalid Id");
+      }
+      return found;
+    }
+
+    internal void Delete(int id, string userId)
+    {
+      VaultKeep toDelete = GetById(id);
+      if(toDelete.CreatorId != userId)
+      {
+        throw new Exception("Access Denied");
+      }
+      _vkr.Delete(id);
     }
   }
 }
