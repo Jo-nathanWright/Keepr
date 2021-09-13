@@ -11,6 +11,11 @@ namespace Keepr.Services
             _repo = repo;
         }
 
+        internal Profile GetProfileById(string id)
+        {
+      return _repo.GetById(id);
+    }
+
         internal string GetProfileEmailById(string id)
         {
             return _repo.GetById(id).Email;
