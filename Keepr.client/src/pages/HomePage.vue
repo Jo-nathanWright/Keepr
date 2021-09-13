@@ -1,12 +1,31 @@
 <template>
-  <p class="text-center">
-    Home Page
-  </p>
+  <div class="container-fluid mt-5">
+    <div class="card-columns">
+      <!-- Bootstrap Cards show how to use this -->
+      <Card v-for="k in keeps" :key="k.id" :keep="k" />
+    </div>
+  </div>
 </template>
 
 <script>
+import { computed, onMounted } from '@vue/runtime-core'
+import Pop from '../utils/Notifier'
+import { keepsService } from '../services/KeepsService'
+import { AppState } from '../AppState'
 export default {
-  name: 'Home'
+  name: 'Home',
+  setup() {
+    onMounted(async() => {
+      try {
+        await keepsService.getAll()
+      } catch (error) {
+        Pop.toast('Something went wrong')
+      }
+    })
+    return {
+      keeps: computed(() => AppState.keeps)
+    }
+  }
 }
 </script>
 
@@ -18,5 +37,8 @@ export default {
     height: 200px;
     width: 200px;
   }
+}
+.image{
+  height: 50%;
 }
 </style>
