@@ -14,12 +14,12 @@ namespace Keepr.Controllers
   public class VaultsController : ControllerBase
   {
     private readonly VaultsService _rs;
-    private readonly AccountService _acts;
+    private readonly KeepsService _ks;
 
-    public VaultsController(VaultsService rs, AccountService acts)
+    public VaultsController(VaultsService rs, KeepsService ks)
     {
       _rs = rs;
-      _acts = acts;
+      _ks = ks;
     }
 
     [HttpGet("{id}")]
@@ -43,11 +43,11 @@ namespace Keepr.Controllers
     }
 
     [HttpGet("{id}/keeps")]
-    public ActionResult<List<VaultKeepProfileViewModel>> GetKeeps(int id)
+    public ActionResult<List<KeepViewModel>> GetKeeps(int id)
     {
       try
       {
-        List<VaultKeepProfileViewModel> vaultKeep = _acts.getVaultKeeps(id);
+        List<KeepViewModel> vaultKeep = _ks.getByVaultId(id);
         return Ok(vaultKeep);
       }
       catch (Exception err)
