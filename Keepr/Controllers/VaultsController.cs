@@ -35,7 +35,7 @@ namespace Keepr.Controllers
         Vault vault = _rs.Get(id, false);
         if(vault.CreatorId != userInfo.Id && vault.IsPrivate == true)
         {
-          throw new Exception("Accessed Denied");
+          throw new Exception("Access Denied");
         }
         //Get account and see if null, if null yell at person, if not let checkPrivate = false
         return Ok(vault);
@@ -52,6 +52,11 @@ namespace Keepr.Controllers
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        Vault vault = _rs.Get(id);
+        if(vault.IsPrivate == true && userInfo == null)
+        {
+          throw new Exception("Access Denied");
+        }
         List<KeepViewModel> vaultKeep = _ks.getByVaultId(id);
         return Ok(vaultKeep);
       }
