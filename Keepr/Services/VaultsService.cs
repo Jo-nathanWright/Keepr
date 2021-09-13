@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Keepr.Models;
 using Keepr.Repositories;
 
@@ -50,6 +51,16 @@ namespace Keepr.Services
         throw new Exception("Access Denied");
       }
       _repo.Delete(vaultId);
+    }
+
+    internal List<Vault> GetVaultsByCreator(string id, Account userInfo)
+    {
+      List<Vault> vaults = _repo.GetByCreator(id);
+      if(userInfo == null)
+      {
+        vaults = vaults.FindAll(v => v.IsPrivate == false);
+      }
+      return vaults;
     }
   }
 }
