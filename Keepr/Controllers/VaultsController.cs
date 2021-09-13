@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CodeWorks.Auth0Provider;
 using Keepr.Models;
@@ -13,10 +14,12 @@ namespace Keepr.Controllers
   public class VaultsController : ControllerBase
   {
     private readonly VaultsService _rs;
+    private readonly AccountService _acts;
 
-    public VaultsController(VaultsService rs)
+    public VaultsController(VaultsService rs, AccountService acts)
     {
       _rs = rs;
+      _acts = acts;
     }
 
     [HttpGet("{id}")]
@@ -32,6 +35,20 @@ namespace Keepr.Controllers
         Vault vault = _rs.Get(id, userInfo.Id, false);
         //Get account and see if null, if null yell at person, if not let checkPrivate = false
         return Ok(vault);
+      }
+      catch (Exception err)
+      {
+        return BadRequest(err.Message);
+      }
+    }
+
+    [HttpGet("{id}/keeps")]
+    public ActionResult<List<VaultKeepProfileViewModel>> GetKeeps(int id)
+    {
+      try
+      {
+        List<VaultKeepProfileViewModel> vaultKeep = _acts.getVaultKeeps(id);
+        return Ok(vaultKeep);
       }
       catch (Exception err)
       {

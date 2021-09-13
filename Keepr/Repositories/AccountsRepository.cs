@@ -1,10 +1,12 @@
 using System.Data;
 using Keepr.Models;
 using Dapper;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Keepr.Repositories
 {
-    public class AccountsRepository
+  public class AccountsRepository
     {
         private readonly IDbConnection _db;
 
@@ -47,5 +49,18 @@ namespace Keepr.Repositories
             _db.Execute(sql, update);
             return update;
         }
+
+    internal List<VaultKeepProfileViewModel> GetVaultKeeps(int id)
+    {
+      string sql = @"
+      SELECT
+        a.*,
+        vk.id AS vaultKeepId
+      FROM vaultKeep vk
+      JOIN accounts a ON vk.creatorId = a.id
+      WHERE vk.vaultId = @id
+      ";
+      return _db.Query<VaultKeepProfileViewModel>(sql, new { id }).ToList();
     }
+  }
 }
