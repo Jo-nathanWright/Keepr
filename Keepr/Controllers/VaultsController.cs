@@ -58,6 +58,15 @@ namespace Keepr.Controllers
           throw new Exception("Access Denied");
         }
         List<KeepViewModel> vaultKeep = _ks.getByVaultId(id);
+        if(userInfo != null)
+        {
+          var found = vaultKeep.Find(v => v.CreatorId == userInfo.Id);
+          if(found == null)
+          {
+            throw new Exception("Access Denied");
+          }
+        }
+        
         return Ok(vaultKeep);
       }
       catch (Exception err)

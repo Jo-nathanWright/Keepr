@@ -14,10 +14,12 @@ namespace Keepr.Controllers
 public class VaultKeepsController : ControllerBase
     {
     private readonly VaultKeepService _vks;
+    private readonly VaultsService _vs;
 
-    public VaultKeepsController(VaultKeepService vks)
+    public VaultKeepsController(VaultKeepService vks, VaultsService vs)
     {
       _vks = vks;
+      _vs = vs;
     }
 
     [HttpPost]
@@ -28,6 +30,7 @@ public class VaultKeepsController : ControllerBase
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
         newVK.CreatorId = userInfo.Id;
         VaultKeep vk = _vks.Create(newVK);
+        newVK.Creator = userInfo;
         return Ok(vk);
       }
         catch (Exception err)
