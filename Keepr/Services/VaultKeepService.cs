@@ -19,7 +19,12 @@ namespace Keepr.Services
 
     internal VaultKeep Create(VaultKeep newVK)
     {
-      return _vkr.Create(newVK);
+      Vault vault = _vr.GetbyId(newVK.VaultId);
+      if(vault.CreatorId != newVK.CreatorId )
+      {
+        throw new Exception("Access Denied");
+      }
+      return _vkr.Create(newVK); //Use vaultId to cross refernce owner.
     }
 
     private VaultKeep GetById(int id)
