@@ -39,7 +39,7 @@
             </div>
             <div>
               <div class="d-flex justify-content-between">
-                <div class="btn-group dropup">
+                <div class="btn-group dropup" @click="getVaults(account.id)">
                   <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Add to Vault
                   </button>
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { computed, onMounted } from '@vue/runtime-core'
+import { computed } from '@vue/runtime-core'
 import { AppState } from '../AppState'
 import { keepsService } from '../services/KeepsService'
 import { profileService } from '../services/ProfileService'
@@ -76,13 +76,6 @@ export default {
     }
   },
   setup() {
-    onMounted(async() => {
-      try {
-        await profileService.getVaultsByProfile(AppState.account.id)
-      } catch (error) {
-        Pop.toast(error)
-      }
-    })
     return {
       account: computed(() => AppState.account),
       vaults: computed(() => AppState.profileVaults),
@@ -94,6 +87,13 @@ export default {
             await profileService.getKeepsByProfile(userId)
             Pop.toast('That keep has been Deleted')
           }
+        } catch (error) {
+          Pop.toast(error, 'error')
+        }
+      },
+      async getVaults(userId) {
+        try {
+          await profileService.getVaultsByProfile(userId)
         } catch (error) {
           Pop.toast(error, 'error')
         }
