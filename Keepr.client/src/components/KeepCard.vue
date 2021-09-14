@@ -39,12 +39,12 @@
             </div>
             <div>
               <div class="d-flex justify-content-between">
-                <div class="btn-group">
+                <div class="btn-group dropup">
                   <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Add to Vault
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item">Future Vault</a>
+                    <DropDown v-for="v in vaults" :key="v.id" :vault="v" />
                   </div>
                 </div>
                 <h5 class="d-flex align-self-center action" v-if="account.id === keep.creatorId" @click="destroy(keep.id, account.id)" data-toggle="modal" :data-target="'#m' + keep.id">
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { computed } from '@vue/runtime-core'
+import { computed, onMounted } from '@vue/runtime-core'
 import { AppState } from '../AppState'
 import { keepsService } from '../services/KeepsService'
 import { profileService } from '../services/ProfileService'
@@ -76,8 +76,16 @@ export default {
     }
   },
   setup() {
+    onMounted(async() => {
+      try {
+        await profileService.getVaultsByProfile(AppState.account.id)
+      } catch (error) {
+        Pop.toast(error)
+      }
+    })
     return {
       account: computed(() => AppState.account),
+      vaults: computed(() => AppState.profileVaults),
       async destroy(keepId, userId) {
         try {
           if (await Pop.confirm()) {
