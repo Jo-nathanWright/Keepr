@@ -14,9 +14,16 @@
     </div>
     <div class="row justify-content-center mt-5">
       <div class="col-11">
+        <h1>Vaults</h1>
+        <p>{{ vaults[0] }}</p>
+        <div class="card-columns">
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+      <div class="col-11">
         <h1>Keeps</h1>
         <div class="card-columns">
-          <!-- Bootstrap Cards show how to use this -->
           <Card v-for="k in keeps" :key="k.id" :keep="k" />
         </div>
       </div>
