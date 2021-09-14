@@ -50,7 +50,7 @@
             :class="{ show: state.dropOpen }"
             @click="state.dropOpen = false"
           >
-            <router-link :to="{ name: 'Profile', params: {id: account.id} }">
+            <router-link :to="{ name: 'Profile', params: {id: account.id} }" @click="update">
               <div class="list-group-item list-group-item-action hoverable">
                 Account
               </div>
@@ -72,8 +72,11 @@
 import { AuthService } from '../services/AuthService'
 import { AppState } from '../AppState'
 import { computed, reactive } from 'vue'
+import { profileService } from '../services/ProfileService'
+import { useRoute } from 'vue-router'
 export default {
   setup() {
+    const route = useRoute()
     const state = reactive({
       dropOpen: false
     })
@@ -86,6 +89,11 @@ export default {
       },
       async logout() {
         AuthService.logout({ returnTo: window.location.origin })
+      },
+      async update() {
+        await profileService.getProfile(route.params.id)
+        await profileService.getVaultsByProfile(route.params.id)
+        await profileService.getKeepsByProfile(route.params.id)
       }
     }
   }
