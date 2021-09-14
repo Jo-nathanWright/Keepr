@@ -14,13 +14,21 @@ class KeepsService {
   }
 
   async Create(keepBody) {
-    const res = await api.post('/api/keeps', keepBody)
-    logger.log(res.data)
-    AppState.keeps.push(res.data)
+    try {
+      const res = await api.post('/api/keeps', keepBody)
+      logger.log(res.data)
+      AppState.keeps.push(res.data)
+    } catch (error) {
+      logger.log('Error ', error)
+    }
   }
 
   async Delete(keepId) {
-    await api.delete('api/keeps/' + keepId)
+    try {
+      await api.delete('api/keeps/' + keepId)
+    } catch (error) {
+      logger.log('Error ', error)
+    }
   }
 }
 

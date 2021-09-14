@@ -74,6 +74,28 @@
                         required
               ></textarea>
             </div>
+            <div class="form-group">
+              <label for="vaultDescription">Description</label>
+              <textarea class="form-control"
+                        id="vaultDescription"
+                        v-model="state.newVault.description"
+                        placeholder="Vault Description..."
+                        rows="4"
+                        maxlength="1000"
+                        required
+              ></textarea>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input"
+                     type="checkbox"
+                     :value="true"
+                     id="isPrivate"
+                     v-model="state.newVault.isPrivate"
+              >
+              <label class="form-check-label" for="isPrivate">
+                Private?
+              </label>
+            </div>
             <hr>
             <div class="d-flex justify-content-end">
               <button type="submit" data-toggle="modal" data-target="#CreateVault" class="btn btn-info mr-3">
@@ -151,6 +173,7 @@ import { profileService } from '../services/ProfileService'
 import Pop from '../utils/Notifier'
 import { useRoute } from 'vue-router'
 import { keepsService } from '../services/KeepsService'
+import { vaultsService } from '../services/VaultsService'
 export default {
   name: 'Profile',
   setup() {
@@ -178,6 +201,16 @@ export default {
         try {
           await keepsService.Create(state.newKeep)
           await profileService.getKeepsByProfile(route.params.id)
+        } catch (error) {
+          Pop.toast(error, 'error')
+        }
+      },
+      async createVault() {
+        try {
+          if (state.newVault.isPrivate === undefined) {
+            state.newVault.isPrivate = false
+          }
+          await vaultsService.createVault(state.newVault)
         } catch (error) {
           Pop.toast(error, 'error')
         }
