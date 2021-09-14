@@ -41,4 +41,7 @@ export default {
 .image{
   height: 50%;
 }
+.card-columns{
+  column-count: 4;
+}
 </style>

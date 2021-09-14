@@ -3,7 +3,7 @@
     <img class="card-img-top" :src="keep.img" alt="Card image cap">
     <div class="card-img-overlay text-light d-flex align-items-end justify-content-between">
       <h5 class="card-title">
-        {{ keep.name }} {{ keep.id }}
+        {{ keep.name }}
       </h5>
       <img class="image rounded-circle" :src="keep.creator.picture" :alt="keep.name">
     </div>
@@ -19,25 +19,41 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="row justify-content-around">
-          <div class="col-6 my-2">
-            <img class="card-img-top" :src="keep.img" alt="Card image cap">
+          <div class="col-6 my-2 d-flex align-items-center">
+            <img class="card-img-top keepImage rounded" :src="keep.img" alt="Card image cap">
           </div>
-          <div class="col-5">
-            <div class=" text-center mt-4">
-              {{ keep.views }} Views
-              {{ keep.keeps }} Keeps
+          <div class="col-5 d-flex flex-column justify-content-between my-3">
+            <div class=" border-bottom border-dark mb-2">
+              <div class="text-center mt-4">
+                {{ keep.views }} Views
+                {{ keep.keeps }} Keeps
+              </div>
+              <div class="text-center mt-4">
+                <h3>{{ keep.name }}</h3>
+              </div>
+              <div class="my-4">
+                <p>
+                  {{ keep.description }}
+                </p>
+              </div>
             </div>
-            <div class="text-center mt-4">
-              <h3>{{ keep.name }}</h3>
-            </div>
-            <div class="mt-3">
-              <h5>
-                {{ keep.description }}
-              </h5>
-            </div>
-            <hr>
-            <div class="text-right">
-              <img class="rounded-circle image" :src="keep.creator.picture" alt="keep.creator.name">
+            <div>
+              <div class="d-flex justify-content-between">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Add to Vault
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item">Future Vault</a>
+                  </div>
+                </div>
+                <h5 class="d-flex align-self-center action" v-if="account.id === keep.creatorId">
+                  🗑
+                </h5>
+                <router-link :to="{ name: 'Profile', params: {id: keep.creatorId} }">
+                  <img class="rounded-circle image mr-2" :src="keep.creator.picture" alt="keep.creator.name" data-dismiss="modal">
+                </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -47,6 +63,8 @@
 </template>
 
 <script>
+import { computed } from '@vue/runtime-core'
+import { AppState } from '../AppState'
 export default {
   props: {
     keep: {
@@ -55,7 +73,9 @@ export default {
     }
   },
   setup() {
-    return {}
+    return {
+      account: computed(() => AppState.account)
+    }
   }
 }
 </script>
@@ -71,5 +91,13 @@ export default {
 }
 .image{
   max-height: 50px;
+}
+.keepImage{
+  max-height: 450px;
+  min-height: 225px;
+  object-fit: cover;
+}
+.action{
+  cursor: pointer;
 }
 </style>
