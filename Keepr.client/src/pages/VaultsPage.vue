@@ -3,6 +3,7 @@
     <div class="row justify-content-center">
       <div class="col-11">
         <h1>{{ vault.name }}</h1>
+        <h5>{{ vault.description }}</h5>
         <h5>Keeps : {{ keeps.length }}</h5>
       </div>
     </div>
