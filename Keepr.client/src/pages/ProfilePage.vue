@@ -15,8 +15,8 @@
     <div class="row justify-content-center mt-5">
       <div class="col-11">
         <h1>Vaults</h1>
-        <p>{{ vaults[0] }}</p>
         <div class="card-columns">
+          <VaultCard v-for="v in vaults" :key="v.id" :vault="v" />
         </div>
       </div>
     </div>
