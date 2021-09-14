@@ -1,8 +1,17 @@
 <template>
   <div class="container-fluid mt-5">
-    <div class="row"></div>
-    <div class="card-columns">
-      <Card v-for="k in keeps" :key="k.id" :keep="k" />
+    <div class="row justify-content-center">
+      <div class="col-11">
+        <h1>{{ vault.name }}</h1>
+        <h5>Keeps : {{ keeps.length }}</h5>
+      </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+      <div class="col-11">
+        <div class="card-columns">
+          <Card v-for="k in keeps" :key="k.id" :keep="k" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -20,12 +29,14 @@ export default {
     onMounted(async() => {
       try {
         await vaultsService.getKeeps(route.params.id)
+        await vaultsService.GetById(route.params.id)
       } catch (error) {
         Pop.toast(error, 'error')
       }
     })
     return {
-      keeps: computed(() => AppState.activeVault)
+      vault: computed(() => AppState.activeVault),
+      keeps: computed(() => AppState.vaultKeeps)
     }
   }
 }
