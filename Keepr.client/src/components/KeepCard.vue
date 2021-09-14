@@ -47,7 +47,7 @@
                     <a class="dropdown-item">Future Vault</a>
                   </div>
                 </div>
-                <h5 class="d-flex align-self-center action" v-if="account.id === keep.creatorId" @click="destroy(keep.id)">
+                <h5 class="d-flex align-self-center action" v-if="account.id === keep.creatorId" @click="destroy(keep.id, account.id)" data-toggle="modal" :data-target="'#m' + keep.id">
                   🗑
                 </h5>
                 <router-link :to="{ name: 'Profile', params: {id: keep.creatorId} }">
@@ -66,6 +66,7 @@
 import { computed } from '@vue/runtime-core'
 import { AppState } from '../AppState'
 import { keepsService } from '../services/KeepsService'
+import { profileService } from '../services/ProfileService'
 import Pop from '../utils/Notifier'
 export default {
   props: {
@@ -77,10 +78,12 @@ export default {
   setup() {
     return {
       account: computed(() => AppState.account),
-      async destroy(keepId) {
+      async destroy(keepId, userId) {
         try {
           if (await Pop.confirm()) {
             await keepsService.Delete(keepId)
+            await keepsService.getAll()
+            await profileService.getKeepsByProfile(userId)
             Pop.toast('That keep has been Deleted')
           }
         } catch (error) {

@@ -15,7 +15,6 @@ class KeepsService {
 
   async Delete(keepId) {
     await api.delete('api/keeps/' + keepId)
-    AppState.keeps = AppState.keeps.filter(k => k.id !== keepId)
   }
 }
 
