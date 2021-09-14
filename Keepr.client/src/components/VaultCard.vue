@@ -1,14 +1,16 @@
 <template>
-  <div v-if="vault.creatorId == account.id || vault.isPrivate == false">
-    <div class="card">
-      <img class="card-img-top" :src="vault.img" alt="Card image cap">
-      <div class="card-img-overlay text-light d-flex align-items-end justify-content-between">
-        <h5 class="card-title">
-          {{ vault.name }}
-        </h5>
+  <router-link :to="{ name: 'Vault', params: {id: vault.id} }">
+    <div v-if="vault.creatorId == account.id || vault.isPrivate == false">
+      <div class="card">
+        <img class="card-img-top" :src="vault.img" alt="Card image cap">
+        <div class="card-img-overlay text-light d-flex align-items-end justify-content-between">
+          <h5 class="card-title">
+            {{ vault.name }}
+          </h5>
+        </div>
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
