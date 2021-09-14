@@ -24,7 +24,7 @@
       <div class="col-11">
         <h1>Keeps</h1>
         <div class="card-columns">
-          <Card v-for="k in keeps" :key="k.id" :keep="k" />
+          <KeepCard v-for="k in keeps" :key="k.id" :keep="k" />
         </div>
       </div>
     </div>

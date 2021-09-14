@@ -12,6 +12,12 @@ class KeepsService {
       logger.log('Error ', err)
     }
   }
+
+  async Delete(keepId) {
+    await api.delete('api/keeps' + keepId)
+    AppState.keeps = AppState.keeps.filter(k => k.id !== keepId)
+    AppState.vaultKeeps = AppState.vaultKeeps.filter(k => k.id !== keepId)
+  }
 }
 
 export const keepsService = new KeepsService()

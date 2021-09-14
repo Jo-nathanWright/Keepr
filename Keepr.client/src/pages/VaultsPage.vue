@@ -9,7 +9,7 @@
     <div class="row justify-content-center mt-4">
       <div class="col-11">
         <div class="card-columns">
-          <Card v-for="k in keeps" :key="k.id" :keep="k" />
+          <KeepCard v-for="k in keeps" :key="k.id" :keep="k" />
         </div>
       </div>
     </div>
