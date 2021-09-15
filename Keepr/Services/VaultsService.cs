@@ -7,16 +7,18 @@ namespace Keepr.Services
 {
     public class VaultsService
     {
-    private readonly VaultsRepository _repo;
+    private readonly VaultsRepository _vr;
+    private readonly KeepsRepository _kr;
 
-    public VaultsService(VaultsRepository repo)
+    public VaultsService(VaultsRepository vr, KeepsRepository kr)
     {
-      _repo = repo;
+      _vr = vr;
+      _kr = kr;
     }
 
     internal Vault Get(int id, bool checkPrivate = false)
     {
-      Vault found = _repo.GetbyId(id);
+      Vault found = _vr.GetbyId(id);
       if(found == null || (checkPrivate == true && found.IsPrivate == true))
       {
         throw new Exception("Access Denied");
@@ -26,7 +28,7 @@ namespace Keepr.Services
 
     internal Vault Create(Vault newVault)
     {
-      return _repo.Create(newVault);
+      return _vr.Create(newVault);
     }
 
     internal Vault Update(Vault updateVault)
@@ -39,7 +41,7 @@ namespace Keepr.Services
       original.Name = updateVault.Name ?? original.Name;
       original.Description = updateVault.Description ?? original.Description;
       original.IsPrivate = updateVault.IsPrivate ?? original.IsPrivate;
-      _repo.Update(original);
+      _vr.Update(original);
       return original;
     }
 
@@ -50,12 +52,20 @@ namespace Keepr.Services
       {
         throw new Exception("Access Denied");
       }
-      _repo.Delete(vaultId);
+       List<KeepViewModel> keep = _kr.GetAll(vaultId);
+       if(keep != null){
+         for (int i = 0; i < keep.Count; i++)
+      {
+        keep[i].Keeps--;
+        _kr.Update(keep[i]);
+      }
+       }
+      _vr.Delete(vaultId);
     }
 
     internal List<Vault> GetVaultsByCreator(string id, Account userInfo)
     {
-      List<Vault> vaults = _repo.GetByCreator(id);
+      List<Vault> vaults = _vr.GetByCreator(id);
       if(userInfo == null)
       {
         vaults = vaults.FindAll(v => v.IsPrivate == false);

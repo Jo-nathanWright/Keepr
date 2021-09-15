@@ -29,6 +29,9 @@ namespace Keepr.Services
       {
         throw new Exception("You're Already in this VaultKeep");
       }
+      Keep keep = _kr.GetbyId(newVK.KeepId);
+      keep.Keeps++;
+      _kr.Update(keep);
       return _vkr.Create(newVK); //Use vaultId to cross refernce owner.
     }
 
@@ -49,6 +52,9 @@ namespace Keepr.Services
       {
         throw new Exception("Access Denied");
       }
+      Keep keep = _kr.GetbyId(toDelete.KeepId);
+      keep.Keeps--;
+      _kr.Update(keep);
       _vkr.Delete(id);
     }
   }

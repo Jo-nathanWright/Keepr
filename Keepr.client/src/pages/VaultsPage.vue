@@ -29,8 +29,6 @@ import { vaultsService } from '../services/VaultsService'
 import Pop from '../utils/Notifier'
 import { AppState } from '../AppState'
 import { profileService } from '../services/ProfileService'
-import { keepsService } from '../services/KeepsService'
-import { logger } from '../utils/Logger'
 export default {
   name: 'Vault',
   setup() {
@@ -54,14 +52,6 @@ export default {
       async destroy(vaultId, userId) {
         try {
           if (await Pop.confirm()) {
-            for (let i = 0; i < AppState.vaultKeeps.length; i++) {
-              const keepId = AppState.vaultKeeps[i].id
-              await keepsService.getById(keepId)
-              const keep = AppState.activeKeep
-              state.editedKeep.keeps = keep.keeps - 1
-              logger.log(state.editedKeep, ': Edited Keep')
-              await keepsService.editViewsorKeeps(keep.id, state.editedKeep)
-            }
             await vaultsService.deleteVault(vaultId)
             await profileService.getVaultsByProfile(userId)
             router.push({ name: 'Profile', params: { id: userId } })
