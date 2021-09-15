@@ -44,7 +44,7 @@
                     Add to Vault
                   </button>
                   <div class="dropdown-menu">
-                    <DropDown v-for="v in vaults" :key="v.id" :vault="v" />
+                    <DropDown v-for="v in vaults" :key="v.id" :vault="v" @click="create(vault.id, keep.id)" />
                   </div>
                 </div>
                 <h5 class="d-flex align-self-center action" v-if="account.id === keep.creatorId" @click="destroy(keep.id, account.id)" data-toggle="modal" :data-target="'#m' + keep.id">
@@ -63,11 +63,13 @@
 </template>
 
 <script>
-import { computed } from '@vue/runtime-core'
+import { computed, reactive } from '@vue/runtime-core'
 import { AppState } from '../AppState'
 import { keepsService } from '../services/KeepsService'
 import { profileService } from '../services/ProfileService'
+import { vaultKeepService } from '../services/VaultKeepService'
 import Pop from '../utils/Notifier'
+import { logger } from '../utils/Logger'
 export default {
   props: {
     keep: {
@@ -76,9 +78,14 @@ export default {
     }
   },
   setup() {
+    const state = reactive({
+      newVaultKeep: {}
+    })
     return {
+      state,
       account: computed(() => AppState.account),
       vaults: computed(() => AppState.profileVaults),
+      vault: computed(() => AppState.activeVault),
       async destroy(keepId, userId) {
         try {
           if (await Pop.confirm()) {
@@ -96,6 +103,16 @@ export default {
           await profileService.getVaultsByProfile(userId)
         } catch (error) {
           Pop.toast(error, 'error')
+        }
+      },
+      async create(vaultId, keepId) {
+        try {
+          state.newVaultKeep.vaultId = vaultId
+          state.newVaultKeep.keepId = keepId
+          await vaultKeepService.createVaultKeep(state.newVaultKeep)
+          Pop.toast('Added to Vault!')
+        } catch (error) {
+          Pop.toast(error)
         }
       }
     }
