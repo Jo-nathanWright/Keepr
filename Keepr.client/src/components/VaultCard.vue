@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'Vault', params: {id: vault.id} }">
+  <router-link :to="{ name: 'Vault', params: {vaultId: vault.id} }">
     <div v-if="vault.creatorId == account.id || vault.isPrivate == false">
       <div class="card">
         <img class="card-img-top" :src="vault.img" alt="Card image cap">

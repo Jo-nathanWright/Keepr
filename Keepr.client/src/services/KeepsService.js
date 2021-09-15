@@ -40,14 +40,6 @@ class KeepsService {
       logger.log('Error ', error)
     }
   }
-
-  async editViewsorKeeps(keepId, editedBody) {
-    try {
-      await api.put('api/keeps/' + keepId, editedBody)
-    } catch (error) {
-      logger.log('Error', error)
-    }
-  }
 }
 
 export const keepsService = new KeepsService()

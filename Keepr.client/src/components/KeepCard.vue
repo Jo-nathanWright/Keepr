@@ -1,6 +1,13 @@
 <template>
-  <div class="card" data-toggle="modal" :data-target="'#m' + keep.id" @click="getKeepId(keep.id)">
+  <div class="card zinx" data-toggle="modal" :data-target="'#m' + keep.id" @click="getKeepId(keep.id)">
     <img class="card-img-top" :src="keep.img" alt="Card image cap">
+
+    <div v-if="canDelete === true" class="card-img-overlay text-light d-flex align-items-start justify-content-end">
+      <h5 class="card-title">
+        ❌
+      </h5>
+    </div>
+
     <div class="card-img-overlay text-light d-flex align-items-end justify-content-between">
       <h5 class="card-title">
         {{ keep.name }}
@@ -68,11 +75,12 @@
 </template>
 
 <script>
-import { computed, reactive } from '@vue/runtime-core'
+import { computed, onMounted, reactive } from '@vue/runtime-core'
 import { AppState } from '../AppState'
 import { keepsService } from '../services/KeepsService'
 import { profileService } from '../services/ProfileService'
 import Pop from '../utils/Notifier'
+import { useRoute } from 'vue-router'
 export default {
   props: {
     keep: {
@@ -81,14 +89,23 @@ export default {
     }
   },
   setup() {
+    const route = useRoute()
     const state = reactive({
       editedKeep: {}
+    })
+    onMounted(() => {
+      if (route.params.vaultId !== undefined) {
+        AppState.canDelete = true
+      } else {
+        AppState.canDelete = false
+      }
     })
     return {
       state,
       account: computed(() => AppState.account),
       vaults: computed(() => AppState.profileVaults),
       vault: computed(() => AppState.activeVault),
+      canDelete: computed(() => AppState.canDelete),
       async destroy(keepId, userId) {
         try {
           if (await Pop.confirm()) {
