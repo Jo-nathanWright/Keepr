@@ -26,6 +26,8 @@ namespace Keepr.Services
       {
         throw new Exception("Invalid Id");
       }
+      keep.Views++;
+      _repo.Update(keep);
       return keep;
     }
     internal Keep Create(Keep newKeep)
@@ -43,8 +45,8 @@ namespace Keepr.Services
       original.Name = editedKeep.Name ?? original.Name;
       original.Description = editedKeep.Description ?? original.Description;
       original.Img = editedKeep.Img ?? original.Img;
-      original.Views = editedKeep.Views > original.Views ? editedKeep.Views : original.Views;
-      original.Keeps = editedKeep.Keeps >= 0 ? editedKeep.Keeps : original.Keeps;
+      // original.Views = editedKeep.Views > original.Views ? editedKeep.Views : original.Views;
+      // original.Keeps = editedKeep.Keeps >= 0 ? editedKeep.Keeps : original.Keeps;
       _repo.Update(original);
       return original;
     }

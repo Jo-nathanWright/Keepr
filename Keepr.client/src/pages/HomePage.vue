@@ -2,9 +2,7 @@
   <div class="container-fluid mt-5">
     <div class="card-columns">
       <!-- Bootstrap Cards show how to use this -->
-      <span @click="update">
-        <KeepCard v-for="k in keeps" :key="k.id" :keep="k" />
-      </span>
+      <KeepCard v-for="k in keeps" :key="k.id" :keep="k" />
     </div>
   </div>
 </template>
