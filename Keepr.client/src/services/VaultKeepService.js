@@ -12,6 +12,15 @@ class VaultKeepService {
       logger.log(error, 'error')
     }
   }
+
+  async delete(vaultKeepId) {
+    try {
+      await api.delete('api/vaultkeeps/' + vaultKeepId)
+      AppState.vaultKeeps = AppState.vaultKeeps.filter(vk => vk.id !== vaultKeepId)
+    } catch (error) {
+      logger.log(error, 'error')
+    }
+  }
 }
 
 export const vaultKeepService = new VaultKeepService()

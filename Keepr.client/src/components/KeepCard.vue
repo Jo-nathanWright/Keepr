@@ -3,7 +3,7 @@
     <img class="card-img-top" :src="keep.img" alt="Card image cap">
 
     <div v-if="canDelete === true" class="card-img-overlay text-light d-flex align-items-start justify-content-end">
-      <h5 class="card-title">
+      <h5 class="card-title" @click="removeKeep(keep.id, vault.id)">
         ❌
       </h5>
     </div>
@@ -81,6 +81,7 @@ import { keepsService } from '../services/KeepsService'
 import { profileService } from '../services/ProfileService'
 import Pop from '../utils/Notifier'
 import { useRoute } from 'vue-router'
+import { vaultKeepService } from '../services/VaultKeepService'
 export default {
   props: {
     keep: {
@@ -114,6 +115,13 @@ export default {
             await profileService.getKeepsByProfile(userId)
             Pop.toast('That keep has been Deleted')
           }
+        } catch (error) {
+          Pop.toast(error, 'error')
+        }
+      },
+      async removeKeep(vaultkeepId) {
+        try {
+          await vaultKeepService
         } catch (error) {
           Pop.toast(error, 'error')
         }
