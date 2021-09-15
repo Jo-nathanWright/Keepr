@@ -24,6 +24,11 @@ namespace Keepr.Services
       {
         throw new Exception("Access Denied");
       }
+      VaultKeep found = _vkr.findExisting(newVK.VaultId, newVK.KeepId, newVK.CreatorId);
+      if(found != null)
+      {
+        throw new Exception("You're Already in this VaultKeep");
+      }
       return _vkr.Create(newVK); //Use vaultId to cross refernce owner.
     }
 

@@ -32,5 +32,10 @@ namespace Keepr.Repositories
       string sql = "DELETE FROM vaultKeep WHERE id = @id LIMIT 1";
       _db.Execute(sql, new { id });
     }
+    internal VaultKeep findExisting(int vaultId, int keepId, string creatorId)
+    {
+      string sql = "SELECT * FROM vaultKeep WHERE vaultId = @vaultId AND keepId = @keepId AND creatorId = @creatorId;";
+      return _db.QueryFirstOrDefault<VaultKeep>(sql, new { vaultId, keepId, creatorId });
+    }
   }
 }
