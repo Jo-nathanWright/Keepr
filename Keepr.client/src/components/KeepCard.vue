@@ -1,5 +1,5 @@
 <template>
-  <div class="card" data-toggle="modal" :data-target="'#m' + keep.id" @click="getKeepId(keep.id), updateViews(keep.id)">
+  <div class="card" data-toggle="modal" :data-target="'#m' + keep.id" @click="getKeepId(keep.id), updateViews(keep.id, account.id)">
     <img class="card-img-top" :src="keep.img" alt="Card image cap">
     <div class="card-img-overlay text-light d-flex align-items-end justify-content-between">
       <h5 class="card-title">
@@ -115,12 +115,14 @@ export default {
           Pop.toast(error)
         }
       },
-      async updateViews(keepId) {
+      async updateViews(keepId, userId) {
         try {
           await keepsService.getById(keepId)
           const fullKeep = AppState.activeKeep
-          state.editedKeep.views = fullKeep.views + 1
-          await keepsService.editViewsorKeeps(fullKeep.id, state.editedKeep)
+          if (userId !== fullKeep.creatorId || userId === undefined) {
+            state.editedKeep.views = fullKeep.views + 1
+            await keepsService.editViewsorKeeps(fullKeep.id, state.editedKeep)
+          }
         } catch (error) {
           Pop.toast('Error', error)
         }
