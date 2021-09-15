@@ -17,7 +17,7 @@ export default {
       required: true
     }
   },
-  setup(props) {
+  setup() {
     const state = reactive({
       newVaultKeep: {},
       editedKeep: {}

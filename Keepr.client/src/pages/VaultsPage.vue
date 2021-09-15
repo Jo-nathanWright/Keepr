@@ -2,7 +2,12 @@
   <div class="container-fluid mt-5">
     <div class="row justify-content-center">
       <div class="col-11">
-        <h1>{{ vault.name }}</h1>
+        <div class="d-flex align-items-center">
+          <h1>{{ vault.name }}</h1>
+          <h3 class="ml-5 action" @click="destroy(vault.id, vault.creatorId)">
+            🗑
+          </h3>
+        </div>
         <h5>{{ vault.description }}</h5>
         <h5>Keeps : {{ keeps.length }}</h5>
       </div>
@@ -18,15 +23,22 @@
 </template>
 
 <script>
-import { computed, onMounted } from '@vue/runtime-core'
-import { useRoute } from 'vue-router'
+import { computed, onMounted, reactive } from '@vue/runtime-core'
+import { useRoute, useRouter } from 'vue-router'
 import { vaultsService } from '../services/VaultsService'
 import Pop from '../utils/Notifier'
 import { AppState } from '../AppState'
+import { profileService } from '../services/ProfileService'
+import { keepsService } from '../services/KeepsService'
+import { logger } from '../utils/Logger'
 export default {
   name: 'Vault',
   setup() {
     const route = useRoute()
+    const router = useRouter()
+    const state = reactive({
+      editedKeep: {}
+    })
     onMounted(async() => {
       try {
         await vaultsService.getKeeps(route.params.id)
@@ -36,12 +48,30 @@ export default {
       }
     })
     return {
+      state,
       vault: computed(() => AppState.activeVault),
-      keeps: computed(() => AppState.vaultKeeps)
+      keeps: computed(() => AppState.vaultKeeps),
+      async destroy(vaultId, userId) {
+        try {
+          if (await Pop.confirm()) {
+            logger.log(AppState.vaultKeeps)
+            await vaultsService.deleteVault(vaultId)
+            await profileService.getVaultsByProfile(userId)
+            router.push({ name: 'Profile', params: { id: userId } })
+            // await keepsService.editViewsorKeeps(state.editedKeep)
+            Pop.toast('That vault has been Deleted')
+          }
+        } catch (error) {
+          Pop.toast(error, 'error')
+        }
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+.action{
+  cursor: pointer;
+}
 </style>

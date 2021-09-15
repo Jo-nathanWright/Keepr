@@ -38,7 +38,7 @@
               </div>
             </div>
             <div>
-              <div class="d-flex justify-content-between">
+              <div class="d-flex justify-content-between" v-if="account.id != null">
                 <div class="btn-group dropup" @click="getVaults(account.id)">
                   <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Add to Vault
@@ -54,6 +54,11 @@
                   <img class="rounded-circle image mr-2" :src="keep.creator.picture" alt="keep.creator.name" data-dismiss="modal">
                 </router-link>
               </div>
+              <div class="d-flex justify-content-end" v-else>
+                <router-link :to="{ name: 'Profile', params: {id: keep.creatorId} }">
+                  <img class="rounded-circle image mr-2" :src="keep.creator.picture" alt="keep.creator.name" data-dismiss="modal">
+                </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -63,13 +68,11 @@
 </template>
 
 <script>
-import { computed, reactive } from '@vue/runtime-core'
+import { computed } from '@vue/runtime-core'
 import { AppState } from '../AppState'
 import { keepsService } from '../services/KeepsService'
 import { profileService } from '../services/ProfileService'
-import { vaultKeepService } from '../services/VaultKeepService'
 import Pop from '../utils/Notifier'
-import { vaultsService } from '../services/VaultsService'
 export default {
   props: {
     keep: {

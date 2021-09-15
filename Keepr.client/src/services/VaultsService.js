@@ -32,6 +32,14 @@ class VaultsService {
       logger.log(error, 'error')
     }
   }
+
+  async deleteVault(vaultId) {
+    try {
+      await api.delete('api/vaults/' + vaultId)
+    } catch (error) {
+      logger.log('Error', error)
+    }
+  }
 }
 
 export const vaultsService = new VaultsService()
