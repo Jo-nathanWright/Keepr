@@ -2,7 +2,9 @@
   <div class="container-fluid mt-5">
     <div class="card-columns">
       <!-- Bootstrap Cards show how to use this -->
-      <KeepCard v-for="k in keeps" :key="k.id" :keep="k" />
+      <span @click="update">
+        <KeepCard v-for="k in keeps" :key="k.id" :keep="k" />
+      </span>
     </div>
   </div>
 </template>
@@ -23,7 +25,14 @@ export default {
       }
     })
     return {
-      keeps: computed(() => AppState.keeps)
+      keeps: computed(() => AppState.keeps),
+      async update() {
+        try {
+          await keepsService.getAll()
+        } catch (error) {
+          Pop.toast('Error', error)
+        }
+      }
     }
   }
 }

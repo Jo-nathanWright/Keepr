@@ -1,5 +1,5 @@
 <template>
-  <div class="card" data-toggle="modal" :data-target="'#m' + keep.id" @click="getKeepId(keep.id)">
+  <div class="card" data-toggle="modal" :data-target="'#m' + keep.id" @click="getKeepId(keep.id), updateViews(keep.id)">
     <img class="card-img-top" :src="keep.img" alt="Card image cap">
     <div class="card-img-overlay text-light d-flex align-items-end justify-content-between">
       <h5 class="card-title">
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { computed } from '@vue/runtime-core'
+import { computed, reactive } from '@vue/runtime-core'
 import { AppState } from '../AppState'
 import { keepsService } from '../services/KeepsService'
 import { profileService } from '../services/ProfileService'
@@ -81,7 +81,11 @@ export default {
     }
   },
   setup() {
+    const state = reactive({
+      editedKeep: {}
+    })
     return {
+      state,
       account: computed(() => AppState.account),
       vaults: computed(() => AppState.profileVaults),
       vault: computed(() => AppState.activeVault),
@@ -109,6 +113,16 @@ export default {
           await keepsService.getById(keepId)
         } catch (error) {
           Pop.toast(error)
+        }
+      },
+      async updateViews(keepId) {
+        try {
+          await keepsService.getById(keepId)
+          const fullKeep = AppState.activeKeep
+          state.editedKeep.views = fullKeep.views + 1
+          await keepsService.editViewsorKeeps(fullKeep.id, state.editedKeep)
+        } catch (error) {
+          Pop.toast('Error', error)
         }
       }
     }
