@@ -54,11 +54,17 @@ export default {
       async destroy(vaultId, userId) {
         try {
           if (await Pop.confirm()) {
-            logger.log(AppState.vaultKeeps)
+            for (let i = 0; i < AppState.vaultKeeps.length; i++) {
+              const keepId = AppState.vaultKeeps[i].id
+              await keepsService.getById(keepId)
+              const keep = AppState.activeKeep
+              state.editedKeep.keeps = keep.keeps - 1
+              logger.log(state.editedKeep, ': Edited Keep')
+              await keepsService.editViewsorKeeps(keep.id, state.editedKeep)
+            }
             await vaultsService.deleteVault(vaultId)
             await profileService.getVaultsByProfile(userId)
             router.push({ name: 'Profile', params: { id: userId } })
-            // await keepsService.editViewsorKeeps(state.editedKeep)
             Pop.toast('That vault has been Deleted')
           }
         } catch (error) {

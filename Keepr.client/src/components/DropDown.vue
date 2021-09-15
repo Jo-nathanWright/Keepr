@@ -4,7 +4,6 @@
 
 <script>
 import { reactive } from '@vue/reactivity'
-import { vaultsService } from '../services/VaultsService'
 import Pop from '../utils/Notifier'
 import { AppState } from '../AppState'
 import { vaultKeepService } from '../services/VaultKeepService'
