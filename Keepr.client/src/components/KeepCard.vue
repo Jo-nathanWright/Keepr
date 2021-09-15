@@ -1,5 +1,5 @@
 <template>
-  <div class="card" data-toggle="modal" :data-target="'#m' + keep.id">
+  <div class="card" data-toggle="modal" :data-target="'#m' + keep.id" @click="getKeepId(keep.id)">
     <img class="card-img-top" :src="keep.img" alt="Card image cap">
     <div class="card-img-overlay text-light d-flex align-items-end justify-content-between">
       <h5 class="card-title">
@@ -44,7 +44,7 @@
                     Add to Vault
                   </button>
                   <div class="dropdown-menu">
-                    <DropDown v-for="v in vaults" :key="v.id" :vault="v" @click="create(vault.id, keep.id)" />
+                    <DropDown v-for="v in vaults" :key="v.id" :vault="v" />
                   </div>
                 </div>
                 <h5 class="d-flex align-self-center action" v-if="account.id === keep.creatorId" @click="destroy(keep.id, account.id)" data-toggle="modal" :data-target="'#m' + keep.id">
@@ -69,7 +69,7 @@ import { keepsService } from '../services/KeepsService'
 import { profileService } from '../services/ProfileService'
 import { vaultKeepService } from '../services/VaultKeepService'
 import Pop from '../utils/Notifier'
-import { logger } from '../utils/Logger'
+import { vaultsService } from '../services/VaultsService'
 export default {
   props: {
     keep: {
@@ -78,11 +78,7 @@ export default {
     }
   },
   setup() {
-    const state = reactive({
-      newVaultKeep: {}
-    })
     return {
-      state,
       account: computed(() => AppState.account),
       vaults: computed(() => AppState.profileVaults),
       vault: computed(() => AppState.activeVault),
@@ -105,12 +101,9 @@ export default {
           Pop.toast(error, 'error')
         }
       },
-      async create(vaultId, keepId) {
+      async getKeepId(keepId) {
         try {
-          state.newVaultKeep.vaultId = vaultId
-          state.newVaultKeep.keepId = keepId
-          await vaultKeepService.createVaultKeep(state.newVaultKeep)
-          Pop.toast('Added to Vault!')
+          await keepsService.getById(keepId)
         } catch (error) {
           Pop.toast(error)
         }

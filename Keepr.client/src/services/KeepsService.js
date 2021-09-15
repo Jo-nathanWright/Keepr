@@ -13,6 +13,16 @@ class KeepsService {
     }
   }
 
+  async getById(keepId) {
+    try {
+      const res = await api.get('/api/keeps/' + keepId)
+      logger.log(res.data)
+      AppState.activeKeep = res.data
+    } catch (error) {
+      logger.log('Error', error)
+    }
+  }
+
   async Create(keepBody) {
     try {
       const res = await api.post('/api/keeps', keepBody)
@@ -28,6 +38,14 @@ class KeepsService {
       await api.delete('api/keeps/' + keepId)
     } catch (error) {
       logger.log('Error ', error)
+    }
+  }
+
+  async editViewsorKeeps(keepId, editedBody) {
+    try {
+      await api.put('api/keeps/' + keepId, editedBody)
+    } catch (error) {
+      logger.log('Error', error)
     }
   }
 }

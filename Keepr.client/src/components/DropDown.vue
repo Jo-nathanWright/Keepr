@@ -1,10 +1,14 @@
 <template>
-  <a class="dropdown-item" @click="getVault">{{ vault.name }}</a>
+  <a class="dropdown-item" @click="create(vault.id)">{{ vault.name }}</a>
 </template>
 
 <script>
+import { reactive } from '@vue/reactivity'
 import { vaultsService } from '../services/VaultsService'
 import Pop from '../utils/Notifier'
+import { AppState } from '../AppState'
+import { vaultKeepService } from '../services/VaultKeepService'
+import { keepsService } from '../services/KeepsService'
 export default {
   name: 'DropDown',
   props: {
@@ -14,10 +18,22 @@ export default {
     }
   },
   setup(props) {
+    const state = reactive({
+      newVaultKeep: {},
+      editedKeep: {}
+    })
     return {
-      async getVault() {
+      state,
+      async create(vaultId) {
         try {
-          await vaultsService.GetById(props.vault.id)
+          const keep = AppState.activeKeep
+          state.newVaultKeep.vaultId = vaultId
+          state.newVaultKeep.keepId = keep.id
+          await vaultKeepService.createVaultKeep(state.newVaultKeep)
+          Pop.toast('Added to Vault!')
+          state.editedKeep.keeps = keep.keeps + 1
+          await keepsService.editViewsorKeeps(keep.id, state.editedKeep)
+          await keepsService.getAll()
         } catch (error) {
           Pop.toast(error)
         }
