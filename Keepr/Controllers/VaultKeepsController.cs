@@ -15,11 +15,13 @@ public class VaultKeepsController : ControllerBase
     {
     private readonly VaultKeepService _vks;
     private readonly VaultsService _vs;
+    private readonly KeepsService _ks;
 
-    public VaultKeepsController(VaultKeepService vks, VaultsService vs)
+    public VaultKeepsController(VaultKeepService vks, VaultsService vs, KeepsService ks)
     {
       _vks = vks;
       _vs = vs;
+      _ks = ks;
     }
 
     [HttpPost]
@@ -31,6 +33,8 @@ public class VaultKeepsController : ControllerBase
         newVK.CreatorId = userInfo.Id;
         VaultKeep vk = _vks.Create(newVK);
         newVK.Creator = userInfo;
+        // Keep keep = _ks.Get(newVK.KeepId);
+        // newVK.Creator = keep.Creator;
         return Ok(vk);
       }
         catch (Exception err)

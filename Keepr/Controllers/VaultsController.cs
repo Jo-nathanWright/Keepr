@@ -65,7 +65,6 @@ namespace Keepr.Controllers
             throw new Exception("Access Denied");
           }
         }
-
         return Ok(vaultKeep);
       }
       catch (Exception err)
