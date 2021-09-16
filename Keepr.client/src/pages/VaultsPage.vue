@@ -4,7 +4,7 @@
       <div class="col-11">
         <div class="d-flex align-items-center">
           <h1>{{ vault.name }}</h1>
-          <h3 class="ml-5 action" @click="destroy(vault.id, vault.creatorId)">
+          <h3 v-if="vault.creatorId === account.id" class="ml-5 action" @click="destroy(vault.id, vault.creatorId)">
             🗑
           </h3>
         </div>
@@ -47,6 +47,7 @@ export default {
     })
     return {
       state,
+      account: computed(() => AppState.account),
       vault: computed(() => AppState.activeVault),
       keeps: computed(() => AppState.vaultKeeps),
       async destroy(vaultId, userId) {

@@ -24,7 +24,7 @@
             <img class="card-img-top keepImage rounded" :src="keep.img" alt="Card image cap">
           </div>
           <div class="col-5 d-flex flex-column justify-content-between my-3">
-            <div v-if="canDelete === true" class="d-flex justify-content-end">
+            <div v-if="canDelete === true && activeKeep.creatorId === account.id" class="d-flex justify-content-end">
               <h5 class="action" @click="removeKeep(keep.vaultKeepId, vault.id)" data-toggle="modal" :data-target="'#m' + keep.id">
                 ❌
               </h5>
@@ -32,7 +32,7 @@
             <div class=" border-bottom border-dark mb-2">
               <div class="text-center mt-4">
                 {{ activeKeep.views }} Views
-                {{ keep.keeps }} Keeps
+                {{ activeKeep.keeps }} Keeps
               </div>
               <div class="text-center mt-4">
                 <h3>{{ keep.name }}</h3>
@@ -53,7 +53,7 @@
                     <DropDown v-for="v in vaults" :key="v.id" :vault="v" />
                   </div>
                 </div>
-                <h5 class="d-flex align-self-center action" v-if="account.id === keep.creatorId" @click="destroy(keep.id, account.id)" data-toggle="modal" :data-target="'#m' + keep.id">
+                <h5 class="d-flex align-self-center action" v-if="account.id === keep.creatorId" @click="destroy(keep.id, account.id, vault.id)" data-toggle="modal" :data-target="'#m' + keep.id">
                   🗑
                 </h5>
                 <router-link :to="{ name: 'Profile', params: {id: keep.creatorId} }">
@@ -108,13 +108,16 @@ export default {
       vaults: computed(() => AppState.profileVaults),
       vault: computed(() => AppState.activeVault),
       canDelete: computed(() => AppState.canDelete),
-      async destroy(keepId, userId) {
+      async destroy(keepId, userId, vaultId) {
         try {
           if (await Pop.confirm()) {
             await keepsService.Delete(keepId)
             await keepsService.getAll()
             await profileService.getKeepsByProfile(userId)
             Pop.toast('That keep has been Deleted')
+            if (vaultId !== undefined) {
+              await vaultsService.getKeeps(vaultId)
+            }
           }
         } catch (error) {
           Pop.toast(error, 'error')
