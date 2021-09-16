@@ -60,7 +60,7 @@ namespace Keepr.Controllers
         List<KeepViewModel> vaultKeep = _ks.getByVaultId(id);
         if(userInfo != null)
         {
-          if(vault.CreatorId != userInfo.Id)
+          if(vault.CreatorId != userInfo.Id && vault.IsPrivate == true)
           {
             throw new Exception("Access Denied");
           }

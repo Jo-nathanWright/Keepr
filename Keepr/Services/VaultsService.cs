@@ -69,6 +69,14 @@ namespace Keepr.Services
       if(userInfo == null)
       {
         vaults = vaults.FindAll(v => v.IsPrivate == false);
+      } else {
+        for (int i = 0; i < vaults.Count; i++)
+        {
+          Vault vault = _vr.GetbyId(vaults[i].Id);
+          if(vault.CreatorId != userInfo.Id){
+            vaults = vaults.FindAll(v => v.IsPrivate == false);
+          }
+        }
       }
       return vaults;
     }

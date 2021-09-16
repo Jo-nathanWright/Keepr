@@ -138,7 +138,7 @@ export default {
         try {
           await profileService.getVaultsByProfile(userId)
         } catch (error) {
-          Pop.toast(error, 'error')
+          Pop.error(error)
         }
       },
       async getKeepId(keepId) {

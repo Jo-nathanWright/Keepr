@@ -14,8 +14,10 @@
 </template>
 
 <script>
-import { computed } from '@vue/runtime-core'
+import { computed, onMounted } from '@vue/runtime-core'
 import { AppState } from '../AppState'
+import { vaultsService } from '../services/VaultsService'
+import Pop from '../utils/Notifier'
 export default {
   props: {
     vault: {
@@ -23,7 +25,14 @@ export default {
       required: true
     }
   },
-  setup() {
+  setup(props) {
+    onMounted(async() => {
+      try {
+        await vaultsService.GetById(props.vault.id)
+      } catch (error) {
+        Pop.toast(error)
+      }
+    })
     return {
       account: computed(() => AppState.account)
     }

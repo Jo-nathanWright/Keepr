@@ -42,7 +42,7 @@ export default {
         await vaultsService.GetById(route.params.vaultId)
         await vaultsService.getKeeps(route.params.vaultId)
       } catch (error) {
-        Pop.toast(error, 'error')
+        router.push({ name: 'Home' })
       }
     })
     return {
@@ -59,7 +59,7 @@ export default {
             Pop.toast('That vault has been Deleted')
           }
         } catch (error) {
-          Pop.toast(error, 'error')
+          Pop.error(error)
         }
       }
     }

@@ -17,6 +17,7 @@ class ProfileService {
     try {
       const res = await api.get('api/profiles/' + profileId + '/vaults')
       logger.log(res.data)
+      logger.log('Got vaults')
       AppState.profileVaults = res.data
     } catch (error) {
       logger.log('Error', error)
