@@ -66,7 +66,8 @@
                   <img class="rounded-circle image mr-2" :src="keep.creator.picture" alt="keep.creator.name" data-dismiss="modal">
                 </router-link>
               </div>
-              <div class="d-flex justify-content-end" v-else>
+              <div class="d-flex justify-content-around align-items-center" v-else>
+                <h5>{{ keep.creator.name }}</h5>
                 <router-link :to="{ name: 'Profile', params: {id: keep.creatorId} }">
                   <img class="rounded-circle image mr-2" :src="keep.creator.picture" alt="keep.creator.name" data-dismiss="modal">
                 </router-link>
