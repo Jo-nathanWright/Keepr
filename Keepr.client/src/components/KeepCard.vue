@@ -31,7 +31,7 @@
             </div>
             <div class=" border-bottom border-dark mb-2">
               <div class="text-center mt-4">
-                {{ keep.views }} Views
+                {{ activeKeep.views }} Views
                 {{ keep.keeps }} Keeps
               </div>
               <div class="text-center mt-4">
@@ -104,6 +104,7 @@ export default {
     return {
       state,
       account: computed(() => AppState.account),
+      activeKeep: computed(() => AppState.activeKeep),
       vaults: computed(() => AppState.profileVaults),
       vault: computed(() => AppState.activeVault),
       canDelete: computed(() => AppState.canDelete),
