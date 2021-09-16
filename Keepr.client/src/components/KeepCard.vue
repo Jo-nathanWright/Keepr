@@ -6,7 +6,7 @@
       <h5 class="card-title">
         {{ keep.name }}
       </h5>
-      <img class="image rounded-circle" :src="keep.creator.picture" :alt="keep.name">
+      <img class="image rounded-circle" :src="keep.creator.picture" :alt="keep.creator.name">
     </div>
   </div>
 

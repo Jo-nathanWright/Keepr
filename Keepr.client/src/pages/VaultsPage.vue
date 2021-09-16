@@ -9,13 +9,13 @@
           </h3>
         </div>
         <h5>{{ vault.description }}</h5>
-        <h5>Keeps : {{ keeps.length }}</h5>
+        <h5>Keeps : {{ vaultKeeps.length }}</h5>
       </div>
     </div>
     <div class="row justify-content-center mt-4">
       <div class="col-11">
         <div class="card-columns">
-          <KeepCard v-for="k in keeps" :key="k.id" :keep="k" />
+          <KeepCard v-for="k in vaultKeeps" :key="k.id" :keep="k" />
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@ export default {
       state,
       account: computed(() => AppState.account),
       vault: computed(() => AppState.activeVault),
-      keeps: computed(() => AppState.vaultKeeps),
+      vaultKeeps: computed(() => AppState.vaultKeeps),
       async destroy(vaultId, userId) {
         try {
           if (await Pop.confirm()) {
