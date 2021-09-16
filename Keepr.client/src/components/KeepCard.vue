@@ -19,11 +19,11 @@
   >
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
-        <div class="row justify-content-around">
-          <div class="col-6 my-2 d-flex align-items-center">
+        <div class="row justify-md-content-around justify-content-center">
+          <div class="col-md-6 col-11 my-2 d-flex align-items-center">
             <img class="card-img-top keepImage rounded" :src="keep.img" alt="Card image cap">
           </div>
-          <div class="col-5 d-flex flex-column justify-content-between my-3">
+          <div class="col-md-5 col-11 d-flex flex-column justify-content-between my-3">
             <div v-if="canDelete === true && vault.creatorId === account.id" class="d-flex justify-content-end">
               <h5 class="action" @click="removeKeep(keep.vaultKeepId, vault.id)" data-toggle="modal" :data-target="'#m' + keep.id">
                 ❌
