@@ -184,8 +184,8 @@ export default {
     })
     onMounted(async() => {
       try {
-        await profileService.getProfile(route.params.id)
         await profileService.getVaultsByProfile(route.params.id)
+        await profileService.getProfile(route.params.id)
         await profileService.getKeepsByProfile(route.params.id)
       } catch (error) {
         Pop.toast(error, 'error')

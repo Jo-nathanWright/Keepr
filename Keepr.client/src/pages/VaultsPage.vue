@@ -39,8 +39,8 @@ export default {
     })
     onMounted(async() => {
       try {
-        await vaultsService.getKeeps(route.params.vaultId)
         await vaultsService.GetById(route.params.vaultId)
+        await vaultsService.getKeeps(route.params.vaultId)
       } catch (error) {
         Pop.toast(error, 'error')
       }

@@ -24,7 +24,7 @@
             <img class="card-img-top keepImage rounded" :src="keep.img" alt="Card image cap">
           </div>
           <div class="col-5 d-flex flex-column justify-content-between my-3">
-            <div v-if="canDelete === true && activeKeep.creatorId === account.id" class="d-flex justify-content-end">
+            <div v-if="canDelete === true && vault.creatorId === account.id" class="d-flex justify-content-end">
               <h5 class="action" @click="removeKeep(keep.vaultKeepId, vault.id)" data-toggle="modal" :data-target="'#m' + keep.id">
                 ❌
               </h5>
@@ -94,7 +94,7 @@ export default {
     const state = reactive({
       editedKeep: {}
     })
-    onMounted(() => {
+    onMounted(async() => {
       if (route.params.vaultId !== undefined) {
         AppState.canDelete = true
       } else {
