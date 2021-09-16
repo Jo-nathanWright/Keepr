@@ -30,8 +30,6 @@ export default {
           state.newVaultKeep.keepId = keep.id
           await vaultKeepService.createVaultKeep(state.newVaultKeep)
           Pop.toast('Added to Vault!')
-          state.editedKeep.keeps = keep.keeps + 1
-          await keepsService.editViewsorKeeps(keep.id, state.editedKeep)
           await keepsService.getAll()
         } catch (error) {
           Pop.toast(error)

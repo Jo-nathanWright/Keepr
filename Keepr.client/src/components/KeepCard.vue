@@ -2,12 +2,6 @@
   <div class="card zinx" data-toggle="modal" :data-target="'#m' + keep.id" @click="getKeepId(keep.id)">
     <img class="card-img-top" :src="keep.img" alt="Card image cap">
 
-    <div v-if="canDelete === true" class="card-img-overlay text-light d-flex align-items-start justify-content-end">
-      <h5 class="card-title" @click="removeKeep(keep.id, vault.id)">
-        ❌
-      </h5>
-    </div>
-
     <div class="card-img-overlay text-light d-flex align-items-end justify-content-between">
       <h5 class="card-title">
         {{ keep.name }}
@@ -30,6 +24,11 @@
             <img class="card-img-top keepImage rounded" :src="keep.img" alt="Card image cap">
           </div>
           <div class="col-5 d-flex flex-column justify-content-between my-3">
+            <div v-if="canDelete === true" class="d-flex justify-content-end">
+              <h5 class="action" @click="removeKeep(keep.vaultKeepId, vault.id)" data-toggle="modal" :data-target="'#m' + keep.id">
+                ❌
+              </h5>
+            </div>
             <div class=" border-bottom border-dark mb-2">
               <div class="text-center mt-4">
                 {{ keep.views }} Views
@@ -82,6 +81,7 @@ import { profileService } from '../services/ProfileService'
 import Pop from '../utils/Notifier'
 import { useRoute } from 'vue-router'
 import { vaultKeepService } from '../services/VaultKeepService'
+import { vaultsService } from '../services/VaultsService'
 export default {
   props: {
     keep: {
@@ -119,9 +119,13 @@ export default {
           Pop.toast(error, 'error')
         }
       },
-      async removeKeep(vaultkeepId) {
+      async removeKeep(vaultkeepId, vaultId) {
         try {
-          await vaultKeepService
+          if (await Pop.confirm()) {
+            await vaultKeepService.delete(vaultkeepId)
+            Pop.toast('That keep has been Removed')
+            await vaultsService.getKeeps(vaultId)
+          }
         } catch (error) {
           Pop.toast(error, 'error')
         }
