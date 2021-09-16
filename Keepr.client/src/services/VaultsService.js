@@ -4,41 +4,25 @@ import { api } from './AxiosService'
 
 class VaultsService {
   async GetById(vaultId) {
-    try {
-      const res = await api.get('/api/vaults/' + vaultId)
-      logger.log(res.data)
-      AppState.activeVault = res.data
-    } catch (error) {
-      logger.log(error, 'error')
-    }
+    const res = await api.get('/api/vaults/' + vaultId)
+    logger.log(res.data)
+    AppState.activeVault = res.data
   }
 
   async getKeeps(vaultId) {
-    try {
-      const res = await api.get('/api/vaults/' + vaultId + '/keeps')
-      logger.log(res.data)
-      AppState.vaultKeeps = res.data
-    } catch (error) {
-      logger.log(error, 'error')
-    }
+    const res = await api.get('/api/vaults/' + vaultId + '/keeps')
+    logger.log(res.data)
+    AppState.vaultKeeps = res.data
   }
 
   async createVault(vaultBody) {
-    try {
-      const res = await api.post('api/vaults', vaultBody)
-      logger.log(res.data)
-      AppState.profileVaults.push(res.data)
-    } catch (error) {
-      logger.log(error, 'error')
-    }
+    const res = await api.post('api/vaults', vaultBody)
+    logger.log(res.data)
+    AppState.profileVaults.push(res.data)
   }
 
   async deleteVault(vaultId) {
-    try {
-      await api.delete('api/vaults/' + vaultId)
-    } catch (error) {
-      logger.log('Error', error)
-    }
+    await api.delete('api/vaults/' + vaultId)
   }
 }
 

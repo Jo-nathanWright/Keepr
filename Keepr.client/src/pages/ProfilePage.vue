@@ -171,7 +171,7 @@ import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { profileService } from '../services/ProfileService'
 import Pop from '../utils/Notifier'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { keepsService } from '../services/KeepsService'
 import { vaultsService } from '../services/VaultsService'
 export default {
