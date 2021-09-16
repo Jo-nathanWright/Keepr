@@ -4,7 +4,7 @@
       <div class="col-11">
         <div class="d-flex align-items-center">
           <h1>{{ vault.name }}</h1>
-          <h3 v-if="vault.creatorId === account.id" class="ml-5 action" @click="destroy(vault.id, vault.creatorId)">
+          <h3 v-if="vault.creatorId === account.id" class="ml-5 action" @click="destroy(vault.id, vault.creatorId)" title="Delete Vault">
             🗑
           </h3>
         </div>

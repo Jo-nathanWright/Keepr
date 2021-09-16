@@ -25,7 +25,7 @@
           </div>
           <div class="col-md-5 col-11 d-flex flex-column justify-content-between my-3">
             <div v-if="canDelete === true && vault.creatorId === account.id" class="d-flex justify-content-end">
-              <h5 class="action" @click="removeKeep(keep.vaultKeepId, vault.id)" data-toggle="modal" :data-target="'#m' + keep.id">
+              <h5 class="action" @click="removeKeep(keep.vaultKeepId, vault.id)" data-toggle="modal" title="Remove Keep" :data-target="'#m' + keep.id">
                 ❌
               </h5>
             </div>
@@ -53,7 +53,13 @@
                     <DropDown v-for="v in vaults" :key="v.id" :vault="v" />
                   </div>
                 </div>
-                <h5 class="d-flex align-self-center action" v-if="account.id === keep.creatorId" @click="destroy(keep.id, account.id, vault.id)" data-toggle="modal" :data-target="'#m' + keep.id">
+                <h5 class="d-flex align-self-center action"
+                    v-if="account.id === keep.creatorId"
+                    @click="destroy(keep.id, account.id, vault.id)"
+                    data-toggle="modal"
+                    :data-target="'#m' + keep.id"
+                    title="Delete Keep"
+                >
                   🗑
                 </h5>
                 <router-link :to="{ name: 'Profile', params: {id: keep.creatorId} }">

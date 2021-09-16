@@ -16,7 +16,7 @@
       <div class="col-11">
         <div class="d-flex mb-2">
           <h1>Vaults</h1>
-          <h2 class="action ml-2 d-flex align-self-center" data-toggle="modal" data-target="#CreateVault" v-if="account.id === profile.id">
+          <h2 class="action ml-2 d-flex align-self-center" data-toggle="modal" data-target="#CreateVault" v-if="account.id === profile.id" title="Add Vault">
             ➕
           </h2>
         </div>
@@ -29,7 +29,7 @@
       <div class="col-11">
         <div class="d-flex mb-2">
           <h1>Keeps</h1>
-          <h2 class="action ml-2 d-flex align-self-center" data-toggle="modal" data-target="#CreateKeep" v-if="account.id === profile.id">
+          <h2 class="action ml-2 d-flex align-self-center" data-toggle="modal" data-target="#CreateKeep" v-if="account.id === profile.id" title="Add Keep">
             ➕
           </h2>
         </div>
