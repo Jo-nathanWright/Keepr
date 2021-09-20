@@ -32,7 +32,7 @@ jobs:
       # dotnet build and publish
       - name: dotnet publish
         run: |
-          dotnet publish -c Release
+          dotnet publish ./Keepr -c Release
 
       - name: Build, Push and Release a Docker container to Heroku.
         uses: gonuit/heroku-docker-deploy@v1.3.3
